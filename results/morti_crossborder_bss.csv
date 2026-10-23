@@ -1,0 +1,9 @@
+model,experiment,prev_test,brier,brier_baseline,bss
+logit,train PL -> test QLD,0.01905,0.239436,0.018687,-11.812927
+logit,train QLD -> test PL,0.081524,0.228508,0.074877,-2.051763
+logit,train PL -> test PL,0.081524,0.209184,0.074877,-1.793681
+logit,train QLD -> test QLD,0.01905,0.201167,0.018687,-9.764994
+catboost,train PL -> test QLD,0.01905,0.232237,0.018687,-11.427676
+catboost,train QLD -> test PL,0.081524,0.226014,0.074877,-2.018459
+catboost,train PL -> test PL,0.081524,0.206599,0.074877,-1.75916
+catboost,train QLD -> test QLD,0.01905,0.199554,0.018687,-9.678701

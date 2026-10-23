@@ -1,0 +1,29 @@
+cecha,flaga,n_panel_pl,n_panel_qld,n_1_pl,n_1_qld,p_1_pl,p_1_qld,rate_ratio,status,uwagi
+pogoda,pogoda_bez_opadu,271817,129994,220459,117557,0.811057,0.904326,1.11,OK,""
+pogoda,pogoda_deszcz,271817,129994,35731,11492,0.131452,0.088404,1.49,OK,""
+pogoda,pogoda_mgla,271817,129994,2514,658,0.009249,0.005062,1.83,OK,""
+pogoda,pogoda_snieg_grad,271817,129994,6054,0,0.022272,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+pogoda,pogoda_wiatr,271817,129994,2648,0,0.009742,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+pogoda,pogoda_inne,271817,129994,6558,287,0.024127,0.002208,10.93,OK,""
+typ_zdarzenia,typ_czolowe,271817,129994,26742,4273,0.098382,0.032871,2.99,OK,""
+typ_zdarzenia,typ_boczne,271817,129994,84400,43182,0.310503,0.332185,1.07,OK,""
+typ_zdarzenia,typ_tylne,271817,129994,33394,36527,0.122855,0.28099,2.29,OK,""
+typ_zdarzenia,typ_pieszy,271817,129994,62266,6119,0.229073,0.047071,4.87,OK,""
+typ_zdarzenia,typ_wywrocenie,271817,129994,21972,5006,0.080834,0.038509,2.1,OK,""
+typ_zdarzenia,typ_ostacol,271817,129994,23687,25359,0.087143,0.195078,2.24,OK,""
+typ_zdarzenia,typ_pojazd_stojacy,271817,129994,2614,4088,0.009617,0.031448,3.27,OK,""
+typ_zdarzenia,typ_kolej,271817,129994,22,0,0.000081,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+typ_zdarzenia,typ_upadek_pasazer,271817,129994,5442,5265,0.020021,0.040502,2.02,OK,""
+typ_zdarzenia,typ_inne,271817,129994,11278,175,0.041491,0.001346,30.82,WARN,asymetria p: ratio 30.8
+nawierzchnia,naw_twarda,271817,129994,270132,127150,0.993801,0.978122,1.02,OK,""
+nawierzchnia,naw_gruntowa,271817,129994,1685,2844,0.006199,0.021878,3.53,OK,""
+nawierzchnia,naw_sucha,271817,129994,189124,113893,0.695777,0.87614,1.26,OK,""
+nawierzchnia,naw_mokra,271817,129994,74737,16101,0.274953,0.12386,2.22,OK,""
+nawierzchnia,naw_sdrucciolevole,271817,129994,1019,0,0.003749,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+nawierzchnia,naw_lod,271817,129994,7630,0,0.02807,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+nawierzchnia,naw_snieg,271817,129994,1658,0,0.0061,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+nawierzchnia,naw_uszkodzona,271817,129994,2442,0,0.008984,0.0,,FAIL,=1 tylko PL (wyciek strukturalny / brak kodu TMR)
+lokalizacja,lok_autostrada,271817,129994,3848,22549,0.014157,0.173462,12.25,OK,""
+lokalizacja,lok_miejski,271817,129994,191845,71599,0.705787,0.550787,1.28,OK,""
+lokalizacja,lok_poza_miastem,271817,129994,76124,35846,0.280056,0.275751,1.02,OK,""
+lokalizacja,(suma=0),271817,129994,0,0,0.0,0.0,,OK,brak wierszy bez przypisanej kategorii

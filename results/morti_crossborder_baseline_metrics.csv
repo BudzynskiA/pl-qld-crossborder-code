@@ -1,0 +1,5 @@
+experiment,panel,n_train,n_test,n_pos_test,prev_test,brier,auc_roc
+train PL -> test QLD,v1,229363,27979,533,0.01905,0.239436,0.713517
+train QLD -> test PL,v1,102009,42454,3461,0.081524,0.228508,0.668855
+train PL -> test PL,v1,229363,42454,3461,0.081524,0.209184,0.73076
+train QLD -> test QLD,v1,102009,27979,533,0.01905,0.201167,0.759839

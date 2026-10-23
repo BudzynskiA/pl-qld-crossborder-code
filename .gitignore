@@ -1,0 +1,11 @@
+# Data and generated outputs (data are not part of this repository)
+data/
+tables_csv/
+tables_md/
+figures/
+
+# Python caches / envs
+__pycache__/
+*.pyc
+.venv/
+venv/

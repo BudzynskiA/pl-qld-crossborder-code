@@ -1,0 +1,5 @@
+model,fold,a_label,b_label,auc_a,auc_b,auc_diff,z,p_value
+logit,test QLD,train QLD -> test QLD,train PL -> test QLD,0.759839,0.713517,0.046321,5.678352,1.3599847409227041e-8
+logit,test PL,train PL -> test PL,train QLD -> test PL,0.73076,0.668855,0.061904,15.57106,1.1449473916833398e-54
+catboost,test QLD,train QLD -> test QLD,train PL -> test QLD,0.760456,0.706263,0.054193,6.678731,2.410206814337975e-11
+catboost,test PL,train PL -> test PL,train QLD -> test PL,0.743238,0.679033,0.064206,15.187679,4.2676640760736376e-52
