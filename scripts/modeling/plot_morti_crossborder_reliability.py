@@ -68,7 +68,7 @@ def main() -> None:
         ax.plot([0, lim], [0, lim], "k--", alpha=0.5, label="Perfect calibration")
         ax.set_title(PANEL_TITLES[exp], fontsize=title_fs)
         ax.set_xlabel("Mean predicted probability", fontsize=label_fs)
-        ax.set_ylabel("Observed fatal-crash rate", fontsize=label_fs)
+        ax.set_ylabel("Observed share of fatal crashes", fontsize=label_fs)
         ax.tick_params(labelsize=tick_fs)
         ax.legend(fontsize=legend_fs)
         ax.set_xlim(0, lim * 1.05)
