@@ -1,7 +1,7 @@
 """
 Shared 0/1 road surface flags (PL SEWIK + QLD TMR), event level.
 
-PL: same definitions as the Poland-Italy study (`nawierzchnia_drogi`, `stan_nawierzchni`).
+PL: SEWIK field definitions (`nawierzchnia_drogi`, `stan_nawierzchni`).
 QLD: `Crash_Road_Surface_Condition` (Sealed/Unsealed × Dry/Wet).
 
 QLD does not distinguish ice, snow, contamination or damage → the corresponding flags = 0.

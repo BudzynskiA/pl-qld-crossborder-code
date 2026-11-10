@@ -1,7 +1,7 @@
 """
 Shared 0/1 crash type flags (PL SEWIK + QLD TMR), event level.
 
-PL: `rodzaj_zdarzenia` (same definitions as the Poland-Italy study).
+PL: `rodzaj_zdarzenia` (SEWIK field definitions).
 QLD: `Crash_Nature` (preferred), with `Crash_Type` as fallback.
 """
 from __future__ import annotations

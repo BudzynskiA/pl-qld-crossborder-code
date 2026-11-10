@@ -67,7 +67,7 @@ python scripts/modeling/plot_morti_crossborder_reliability.py
 
 Outputs go to `tables_csv/`, `tables_md/` and `figures/` (not tracked). The copies in `results/` are the tables reported in the paper.
 
-CatBoost selects the number of boosting iterations by early stopping on the last training year (2022) of the source jurisdiction and is then refitted on all training years; test records are not used for model selection. The CatBoost results reported in the paper (Tables 7, 8, 11 and 13) are in `results/morti_crossborder_revision_sensitivity.csv` (model `catboost_val2022`).
+CatBoost selects the number of boosting iterations by early stopping on the last training year (2022) of the source jurisdiction and is then refitted on all training years; test records are not used for model selection. The CatBoost results reported in the paper (Tables 7, 8 and 13) are in `results/morti_crossborder_revision_sensitivity.csv` (model `catboost_val2022`); the CatBoost DeLong tests in Table 11 are written by the same script to `tables_md/morti_crossborder_revision_sensitivity.md`.
 
 ## Citation
 
@@ -77,4 +77,4 @@ If you use this code, please cite:
 
 ## License
 
-All rights reserved until a license is chosen (see `LICENSE`).
+All rights reserved (see `LICENSE`). The code is shared for transparency and reproducibility of the article.

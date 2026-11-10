@@ -1,7 +1,7 @@
 """
 Shared 0/1 location flags (PL SEWIK + QLD TMR), event level.
 
-PL: same definitions as the Poland-Italy study (`obszar`, `rodzaj_drogi`).
+PL: SEWIK field definitions (`obszar`, `rodzaj_drogi`).
 QLD (proxy v1):
   lok_autostrada   - `State_Road_Name` contains motorway/freeway OR
                      State-controlled + `Crash_Speed_Limit` = 100-110 km/h

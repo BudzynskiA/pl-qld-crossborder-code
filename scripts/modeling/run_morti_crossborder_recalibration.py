@@ -193,8 +193,8 @@ def _write_md(metric_rows: list[dict], shift_rows: list[dict], *, feature_flags:
     lines.extend(
         [
             "",
-            "AUC-ROC is invariant to monotonic recalibration (Platt/isotonic), "
-            "so the ranking does not change; the drop in ECE/Brier shows the improvement in absolute "
+            "Platt scaling is strictly monotonic and leaves AUC-ROC unchanged; isotonic regression can create ties "
+            "and shift AUC slightly; the drop in ECE/Brier shows the improvement in absolute "
             "calibration after adding a small target sample.",
             "",
             "## Covariate shift (training years, flag prevalence PL vs QLD)",

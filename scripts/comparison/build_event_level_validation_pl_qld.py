@@ -241,8 +241,8 @@ Leakage audit: [`harmonized_flags_country_leakage_audit.md`](harmonized_flags_co
 ## Interpretation
 
 - The **PL/QLD crash ratio** reflects differences in population and traffic; it is not a harmonization error.
-- **y_morti prevalence** in QLD (~1.9%) is lower than in PL (~3.5%), as expected given the different register definitions.
-- The **7 FAIL flags** (snow, wind, railway, PL-only surface flags) are a structural limitation of TMR; model v1 uses the **20 OK flags**.
+- **y_morti prevalence** in QLD (~1.9%) is lower than in PL (~8.5%), as expected given the different register definitions.
+- The **7 FAIL flags** (snow, wind, railway, PL-only surface flags) are a structural limitation of TMR; model v1 uses the **20 retained flags** (19 OK + `typ_inne` WARN).
 """
 
 

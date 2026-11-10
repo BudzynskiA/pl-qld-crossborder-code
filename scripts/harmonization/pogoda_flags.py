@@ -1,7 +1,7 @@
 """
 Shared 0/1 weather flags (PL SEWIK + QLD TMR), event level.
 
-PL: same definitions as the Poland-Italy study (`warunki_atmosferyczne`, `;`-separated tokens).
+PL: SEWIK field definitions (`warunki_atmosferyczne`, `;`-separated tokens).
 QLD: `Crash_Atmospheric_Condition` (Clear, Raining, Fog, Smoke/Dust).
 
 TMR codes have no snow/hail or wind → `pogoda_snieg_grad`, `pogoda_wiatr` = 0

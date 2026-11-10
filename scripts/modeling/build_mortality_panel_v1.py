@@ -147,7 +147,7 @@ def _write_md(
             "",
             "## Models",
             "",
-            "CatBoost / logit on this sample (20 OK flags, without the FAIL flags from the leakage audit): "
+            "CatBoost / logit on this sample (20 retained flags: 19 OK + `typ_inne` WARN; FAIL flags from the leakage audit excluded): "
             "`scripts/modeling/run_morti_crossborder_catboost.py`.",
             "",
         ]
