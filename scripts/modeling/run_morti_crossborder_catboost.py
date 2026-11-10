@@ -37,13 +37,16 @@ from modeling._morti_crossborder_common import (  # noqa: E402
     FEATURE_FLAGS,
     TEST_YEAR_MIN,
     TRAIN_YEAR_MAX,
+    CATBOOST_MAX_ITERATIONS,
+    CATBOOST_VAL_YEAR,
+    catboost_val_proba,
     load_panel,
     panel_specs,
     train_test,
 )
 
 try:
-    from catboost import CatBoostClassifier
+    import catboost  # noqa: F401
     from sklearn.metrics import brier_score_loss, roc_auc_score
 except ImportError as exc:
     raise SystemExit("pip install -r requirements.txt (catboost, scikit-learn)") from exc
@@ -51,32 +54,10 @@ except ImportError as exc:
 OUT_MD = TABLES_MD / "morti_crossborder_catboost.md"
 OUT_CSV = TABLES_CSV / "morti_crossborder_catboost_metrics.csv"
 
-CATBOOST_ITERATIONS = 500
-
-
-def _make_model() -> CatBoostClassifier:
-    return CatBoostClassifier(
-        loss_function="Logloss",
-        iterations=CATBOOST_ITERATIONS,
-        learning_rate=0.1,
-        depth=6,
-        l2_leaf_reg=3.0,
-        auto_class_weights="Balanced",
-        random_seed=42,
-        verbose=0,
-        allow_writing_files=False,
-    )
-
-
 def _fit_eval(train: pl.DataFrame, test: pl.DataFrame) -> dict:
-    x_train = train.select(FEATURE_FLAGS).to_numpy()
-    y_train = train[Y_MORTI].to_numpy()
-    x_test = test.select(FEATURE_FLAGS).to_numpy()
     y_test = test[Y_MORTI].to_numpy()
 
-    model = _make_model()
-    model.fit(x_train, y_train, eval_set=(x_test, y_test), use_best_model=True)
-    proba = model.predict_proba(x_test)[:, 1]
+    proba, best_iter = catboost_val_proba(train, test, FEATURE_FLAGS)
 
     n_test = len(y_test)
     n_pos = int(y_test.sum())
@@ -88,7 +69,7 @@ def _fit_eval(train: pl.DataFrame, test: pl.DataFrame) -> dict:
         "n_pos_test": n_pos,
         "prev_test": round(prev, 6),
         "brier": round(float(brier_score_loss(y_test, proba)), 6),
-        "best_iteration": int(model.get_best_iteration() or model.tree_count_),
+        "best_iteration": best_iter,
     }
     if n_pos > 0 and n_pos < n_test:
         out["auc_roc"] = round(float(roc_auc_score(y_test, proba)), 6)
@@ -111,8 +92,9 @@ def _write_md(rows: list[dict]) -> None:
         f"**X:** {len(FEATURE_FLAGS)} OK harmonized flags (no `kraj`, no `rok`).",
         f"**Excluded (audit FAIL):** {excluded}.",
         f"**Split:** train year <= {TRAIN_YEAR_MAX}, test year >= {TEST_YEAR_MIN}.",
-        f"**Model:** CatBoostClassifier (Logloss, depth=6, iterations={CATBOOST_ITERATIONS}, "
-        "auto_class_weights=Balanced, early stopping on eval_set).",
+        f"**Model:** CatBoostClassifier (Logloss, depth=6, at most {CATBOOST_MAX_ITERATIONS} iterations, "
+        f"auto_class_weights=Balanced; iterations selected by early stopping on year {CATBOOST_VAL_YEAR} "
+        "of the source country, then refit on all training years; test records not used for model selection).",
         "",
         "Definition of sample v1: [`mortality_panel_v1.md`](mortality_panel_v1.md).",
         "",

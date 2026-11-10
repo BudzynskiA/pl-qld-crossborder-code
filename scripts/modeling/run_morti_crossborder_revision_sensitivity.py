@@ -9,7 +9,6 @@ Blocks (same test set: year >= TEST_YEAR_MIN, sample v1):
                 no_location: without all lok_* flags (17 flags)
               (dropping lok_autostrada alone is a reparametrization: lok_* are mutually exclusive and exhaustive)
   learners   : RF, HistGradientBoosting, CatBoost, XGBoost (20 flags):
-                catboost_v4       : best iteration selected on the test fold (as in v4)
                 catboost_val2022  : best iteration on year 2022 of the source country, refit on the full training set
                 catboost_fixed500 : no early stopping
                 xgboost_val2022   : same iteration-selection protocol as catboost_val2022
@@ -284,16 +283,12 @@ def _score(y_test: np.ndarray, proba: np.ndarray) -> dict:
     }
 
 
-def _fit_eval(model, train: pl.DataFrame, test: pl.DataFrame, flags: tuple[str, ...], *, catboost_test_eval: bool = False) -> dict:
+def _fit_eval(model, train: pl.DataFrame, test: pl.DataFrame, flags: tuple[str, ...]) -> dict:
     x_train = train.select(flags).to_numpy()
     y_train = train[Y_MORTI].to_numpy()
     x_test = test.select(flags).to_numpy()
     y_test = test[Y_MORTI].to_numpy()
-    if catboost_test_eval:
-        # As in run_morti_crossborder_catboost.py (v4): best iteration selected on the test fold.
-        model.fit(x_train, y_train, eval_set=(x_test, y_test), use_best_model=True)
-    else:
-        model.fit(x_train, y_train)
+    model.fit(x_train, y_train)
     proba = model.predict_proba(x_test)[:, 1]
     return {"n_train": train.height, "n_features": len(flags), **_score(y_test, proba)}
 
@@ -429,13 +424,6 @@ def _run(df: pl.DataFrame) -> tuple[list[dict], list[dict]]:
 
         # learners
         _add("learners", "20flags", "logit", name, _fit_eval(_make_logit(), train, test, FEATURE_FLAGS))
-        _add(
-            "learners",
-            "20flags",
-            "catboost_v4",
-            name,
-            _fit_eval(_make_catboost(), train, test, FEATURE_FLAGS, catboost_test_eval=True),
-        )
         cb_metrics, cb_proba[(train_kraj, test_kraj)] = _fit_eval_catboost_val(train, test, FEATURE_FLAGS)
         _add("learners", "20flags", "catboost_val2022", name, cb_metrics)
         _add("learners", "20flags", "catboost_fixed500", name, _fit_eval(_make_catboost(), train, test, FEATURE_FLAGS))
@@ -617,7 +605,6 @@ def _write_md(
             "",
             "## Notes",
             "",
-            "- `catboost_v4` reproduces the v4 procedure (best iteration selected on the test fold); "
             f"`catboost_val2022` and `xgboost_val2022` select the best iteration on year {CATBOOST_VAL_YEAR} "
             "of the source country and refit on the full training set; `catboost_fixed500` is CatBoost without eval_set.",
             "- Block `ksi`: PL `ilosc_ciezko_rannych` > 0 or fatality; QLD `Crash_Severity` in (Fatal, Hospitalisation).",

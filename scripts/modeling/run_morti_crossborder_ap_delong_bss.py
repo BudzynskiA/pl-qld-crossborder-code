@@ -50,6 +50,7 @@ from modeling._morti_crossborder_common import (  # noqa: E402
     EXPERIMENTS,
     TEST_YEAR_MIN,
     TRAIN_YEAR_MAX,
+    catboost_val_proba,
     feature_flags_from_env,
     load_panel,
     panel_specs,
@@ -64,7 +65,7 @@ except ImportError as exc:
     raise SystemExit("pip install -r requirements.txt") from exc
 
 try:
-    from catboost import CatBoostClassifier
+    import catboost  # noqa: F401
 
     _HAS_CATBOOST = True
 except ImportError:
@@ -77,7 +78,6 @@ OUT_BSS_MD = TABLES_MD / "morti_crossborder_bss.md"
 OUT_DELONG_CSV = TABLES_CSV / "morti_crossborder_delong.csv"
 OUT_DELONG_MD = TABLES_MD / "morti_crossborder_delong.md"
 
-CATBOOST_ITERATIONS = 500
 N_BOOT = 1000
 BOOT_SEED = 42
 CI_LO_PCT = 2.5
@@ -95,23 +95,9 @@ def _fit_logit_proba(train: pl.DataFrame, test: pl.DataFrame, feature_flags: tup
 
 
 def _fit_catboost_proba(train: pl.DataFrame, test: pl.DataFrame, feature_flags: tuple[str, ...]):
-    x_train = train.select(feature_flags).to_numpy()
-    y_train = train[Y_MORTI].to_numpy()
-    x_test = test.select(feature_flags).to_numpy()
-    y_test = test[Y_MORTI].to_numpy()
-    model = CatBoostClassifier(
-        loss_function="Logloss",
-        iterations=CATBOOST_ITERATIONS,
-        learning_rate=0.1,
-        depth=6,
-        l2_leaf_reg=3.0,
-        auto_class_weights="Balanced",
-        random_seed=42,
-        verbose=0,
-        allow_writing_files=False,
-    )
-    model.fit(x_train, y_train, eval_set=(x_test, y_test), use_best_model=True)
-    return y_test, model.predict_proba(x_test)[:, 1]
+    """Iterations selected on the last training year of the source country; test fold untouched."""
+    proba, _ = catboost_val_proba(train, test, feature_flags)
+    return test[Y_MORTI].to_numpy(), proba
 
 
 def _bootstrap_ap_ci(y_test: np.ndarray, proba: np.ndarray) -> dict:

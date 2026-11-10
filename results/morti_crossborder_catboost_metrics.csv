@@ -1,5 +1,0 @@
-experiment,n_train,n_test,n_pos_test,prev_test,brier,best_iteration,auc_roc
-train PL -> test QLD,229363,27979,533,0.01905,0.232237,15,0.706263
-train QLD -> test PL,102009,42454,3461,0.081524,0.226014,7,0.679033
-train PL -> test PL,229363,42454,3461,0.081524,0.206599,60,0.743238
-train QLD -> test QLD,102009,27979,533,0.01905,0.199554,25,0.760456

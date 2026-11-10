@@ -1,6 +1,6 @@
 # Cross-border fatal-crash modelling: Poland (SEWIK) and Queensland (TMR)
 
-Analysis code for the manuscript *Harmonizing Police Crash Datasets for Cross-Border Fatal-Crash Modelling: Poland and Queensland* (Budzyński A., Paz A.; under review).
+Analysis code for the article *Harmonizing police crash registers for cross-border fatal-crash modelling: Poland and Queensland* (Budzyński A., Paz A.), Accident Analysis and Prevention, 2026, <https://doi.org/10.1016/j.aap.2026.108871>.
 
 The code builds event-level crash records from the Polish police register (SEWIK) and the Queensland road crash file (TMR), harmonizes them into shared binary indicators (weather, crash type, pavement, location), audits the indicators for country leakage, and evaluates fatal-crash models (logistic regression, CatBoost, plus RF, HistGradientBoosting and XGBoost in the sensitivity analysis) in four transfer settings (PL→QLD, QLD→PL, PL→PL, QLD→QLD; train 2015-2022, test 2023-2024). Evaluation covers AUC with confidence intervals, average precision, DeLong tests, Brier skill score, calibration and recalibration (Platt, isotonic), and covariate shift.
 
@@ -67,11 +67,13 @@ python scripts/modeling/plot_morti_crossborder_reliability.py
 
 Outputs go to `tables_csv/`, `tables_md/` and `figures/` (not tracked). The copies in `results/` are the tables reported in the paper.
 
+CatBoost selects the number of boosting iterations by early stopping on the last training year (2022) of the source jurisdiction and is then refitted on all training years; test records are not used for model selection. The CatBoost results reported in the paper (Tables 7, 8, 11 and 13) are in `results/morti_crossborder_revision_sensitivity.csv` (model `catboost_val2022`).
+
 ## Citation
 
 If you use this code, please cite:
 
-> Budzyński, A., Paz, A. (2026). Harmonizing Police Crash Datasets for Cross-Border Fatal-Crash Modelling: Poland and Queensland. *[journal, volume, pages, DOI to be added on publication]*
+> Budzyński, A., Paz, A. (2026). Harmonizing police crash registers for cross-border fatal-crash modelling: Poland and Queensland. *Accident Analysis and Prevention*, 108871. https://doi.org/10.1016/j.aap.2026.108871
 
 ## License
 

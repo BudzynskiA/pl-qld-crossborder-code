@@ -170,3 +170,50 @@ def calibration_metrics(y_true: np.ndarray, proba: np.ndarray, *, n_bins: int = 
         "ece": round(ece, 6),
         "mce": round(mce, 6),
     }
+
+
+# CatBoost: the number of boosting iterations is selected by early stopping on the last
+# training year (CATBOOST_VAL_YEAR) of the source country; the model is then refitted on all
+# training years with that number of iterations. Test records are never used for model selection.
+CATBOOST_MAX_ITERATIONS = 500
+CATBOOST_VAL_YEAR = TRAIN_YEAR_MAX
+
+
+def make_catboost(iterations: int = CATBOOST_MAX_ITERATIONS):
+    from catboost import CatBoostClassifier
+
+    return CatBoostClassifier(
+        loss_function="Logloss",
+        iterations=iterations,
+        learning_rate=0.1,
+        depth=6,
+        l2_leaf_reg=3.0,
+        auto_class_weights="Balanced",
+        random_seed=42,
+        verbose=0,
+        allow_writing_files=False,
+    )
+
+
+def catboost_val_proba(
+    train: pl.DataFrame,
+    test: pl.DataFrame,
+    flags: tuple[str, ...],
+) -> tuple[np.ndarray, int]:
+    """Early stopping on CATBOOST_VAL_YEAR of the source country, refit on the full training set.
+
+    Returns (predicted probabilities on the test set, number of iterations used).
+    """
+    fit = train.filter(pl.col("rok") < CATBOOST_VAL_YEAR)
+    val = train.filter(pl.col("rok") == CATBOOST_VAL_YEAR)
+    probe = make_catboost()
+    probe.fit(
+        fit.select(flags).to_numpy(),
+        fit[Y_MORTI].to_numpy(),
+        eval_set=(val.select(flags).to_numpy(), val[Y_MORTI].to_numpy()),
+        use_best_model=True,
+    )
+    best_iter = max(int(probe.get_best_iteration() or 0) + 1, 1)
+    model = make_catboost(iterations=best_iter)
+    model.fit(train.select(flags).to_numpy(), train[Y_MORTI].to_numpy())
+    return model.predict_proba(test.select(flags).to_numpy())[:, 1], best_iter
